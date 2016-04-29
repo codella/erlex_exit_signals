@@ -20,7 +20,7 @@ defmodule Puppet do
     send(puppet, {:fetch_latest_unhandled_message, self})
 
     receive do
-      {:fetched, ^puppet, latest_unhandled_message} -> latest_unhandled_message
+      {:fetched, ^puppet, message} -> message
     end
   end
 
