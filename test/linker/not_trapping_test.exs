@@ -15,11 +15,32 @@ defmodule Linker.NotTrapping do
     assert Puppet.alive?(linker)
   end
 
-  test "lives when process receives :normal from self", %{process: process, linker: linker} do
-    Puppet.self_exit(process, :normal)
+  test "lives when process invokes exit(:normal)", %{process: process, linker: linker} do
+    Puppet.kernel_exit(process, :normal)
 
     refute Puppet.alive?(process)
     assert Puppet.alive?(linker)
+  end
+
+  test "dies when process invokes exit(:exception)", %{process: process, linker: linker} do
+    Puppet.kernel_exit(process, :exception)
+
+    refute Puppet.alive?(process)
+    refute Puppet.alive?(linker)
+  end
+
+  test "lives when process invokes Process.exit(self, :normal)", %{process: process, linker: linker} do
+    Puppet.self_process_exit(process, :normal)
+
+    refute Puppet.alive?(process)
+    assert Puppet.alive?(linker)
+  end
+
+  test "dies when process invokes Process.exit(self, :exception)", %{process: process, linker: linker} do
+    Puppet.self_process_exit(process, :exception)
+
+    refute Puppet.alive?(process)
+    refute Puppet.alive?(linker)
   end
 
   test "dies when process raises an exception", %{process: process, linker: linker} do

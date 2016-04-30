@@ -24,8 +24,12 @@ defmodule Puppet do
     end
   end
 
-  def self_exit(puppet, signal) do
-    send(puppet, {:self_exit, signal})
+  def self_process_exit(puppet, signal) do
+    send(puppet, {:self_process_exit, signal})
+  end
+
+  def kernel_exit(puppet, signal) do
+    send(puppet, {:kernel_exit, signal})
   end
 
   def raise(puppet, message) do
@@ -42,7 +46,7 @@ defmodule Puppet do
     receive do
       {:pong, ^puppet} -> nil
     after
-      5 -> nil
+      10 -> nil
     end
 
     Process.alive?(puppet)
@@ -73,9 +77,13 @@ defmodule Puppet do
         {:fetch_latest_unhandled_message, sender} ->
           send sender, {:fetched, self, state.latest_unhandled_message}
           listen(state)
-        # COMMAND: requests a signal to be sent to self
-        {:self_exit, signal} ->
+        # COMMAND: requests a signal to be sent to self via Process.exit/2
+        {:self_process_exit, signal} ->
           Process.exit(self, signal)
+          listen(state)
+        # COMMAND: requests a signal to be sent to self via Kernel.exit/1
+        {:kernel_exit, signal} ->
+          exit(signal)
           listen(state)
         # COMMAND: requests an exception to be raised
         {:raise, message} ->

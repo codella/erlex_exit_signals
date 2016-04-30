@@ -5,8 +5,14 @@ defmodule Process.NotTrapping do
     {:ok, process: Puppet.start(trap_exit: false)}
   end
 
-  test "dies when receives :normal signal by self", %{process: process} do
-    Puppet.self_exit(process, :normal)
+  test "dies when invokes Process.exit(self, :normal)", %{process: process} do
+    Puppet.self_process_exit(process, :normal)
+
+    refute Puppet.alive?(process)
+  end
+
+  test "dies when invokes Process.exit(self, :exception)", %{process: process} do
+    Puppet.self_process_exit(process, :exception)
 
     refute Puppet.alive?(process)
   end
