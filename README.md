@@ -1,9 +1,9 @@
-# Erlang Exit Signals Tests in Elixir
+# Testing Erlang Exit Signals with Elixir
 When I started wondering how to create a supervision tree using Elixir, I ended up having so many questions about exit signals, and how they impact processes.
 
 Then, I stumbled upon [Understanding Exit Signals in Erlang/Elixir](http://crypt.codemancers.com/posts/2016-01-24-understanding-exit-signals-in-erlang-slash-elixir/), published by Emil Soman on February 29th, 2016.
 
-Since I tend to dive into some code to verify what I read, I wrote some tests using ExUnit to closely observe how processes react to exit signals.
+Since I tend to dive into some code to verify what I read, I wrote some tests using Elixir (ExUnit) to closely observe how processes react to exit signals.
 
 Also, I started to wonder how a process linked to another one would react in different termination scenario, and I ended up writing some more tests to investigate further.
 
