@@ -11,7 +11,7 @@ defmodule Process.NotTrapping do
     assert Puppet.alive?(process)
   end
 
-  test "dies receives :exception signal", %{process: process} do
+  test "dies when receives :exception signal", %{process: process} do
     Process.exit(process, :exception)
 
     refute Puppet.alive?(process)
